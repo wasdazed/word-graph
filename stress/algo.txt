@@ -1,0 +1,35 @@
+Data:
+
+stress_dictionary - (id, word, pattern), where pattern is a sequence of 0 and 1 depending on if syllable is under stress (1) or not (0).
+
+text - a sequence of words (word)+.
+
+Learning algorithm (N - maximum syllables):
+
+Tokenize the text ( list(word) -> list(id) )
+
+Create a binary tree T of depth = N, with empty sets of ids in nodes.
+
+For each sentence s in text:
+    For each word w in the sentence s:
+        Number of syllables met = 0
+        n = root
+        While number of syllables met < N and end of sentence is not reached:
+            Put id(w) into a T node n_i, such that path from n to n_i is a pattern of word id(w)
+            Number of syllables met += number of syllables(w)
+            w++ (take next word)
+            n = n_i
+
+Generating algorithm (T - tree, p - given pattern as list of 0 and 1):
+
+The poem is generated from the end to the beginning.
+
+result = list()
+
+Pick T node n = n_i, such that a sequence of nodes n0...n_i = p
+
+While n is not n0:
+    (optional - pick the first word such that it ends some sentence in the text)
+    Pick random word w from set of words at n.
+    result = w + result
+    n = n_[i - number of syllables in w]
